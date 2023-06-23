@@ -49,7 +49,7 @@ def authUser(u):
   
   if ifUser:
     return {
-      'data': ifUser,
+      'data': str(ifUser),
       'message': f"User {user['user']} authenticated",
       'status': True
     }
