@@ -30,7 +30,7 @@ def createUser(u,p):
     'status': True
   }
 
-def authUser(u,p):
+def authUser(u):
   """
   The function `authUser` checks if a user exists in a database and returns a message indicating
   whether the user is authenticated or not.
@@ -44,14 +44,12 @@ def authUser(u,p):
   message will say "User {user['user']} doesn't exists".
   """
   userDb = db.users
-  user = {
-    'user': u,
-    'password' : p
-  }
+  user = { 'user': u }
   ifUser = userDb.find_one(user)
   
   if ifUser:
     return {
+      'data': ifUser,
       'message': f"User {user['user']} authenticated",
       'status': True
     }

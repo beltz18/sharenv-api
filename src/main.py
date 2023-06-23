@@ -38,8 +38,7 @@ def auth_user():
   if request.method == 'POST':
     print(request.form)
     user = request.json['user']
-    pasw = request.json['pasw']
-    a = authUser(user,pasw)
+    a = authUser(user)
     return a
 
 if __name__ == '__main__':
