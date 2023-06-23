@@ -1,9 +1,11 @@
 from flask            import *
 from var.vars         import *
 from controllers.user import *
+from flask_cors       import CORS
 
 app = Flask(__name__)
 app.secret_key = SECRET
+CORS(app)
 
 @app.route(ROOT)
 def index():
