@@ -48,8 +48,9 @@ def authUser(u):
   ifUser = userDb.find_one(user)
   
   if ifUser:
+    del ifUser['_id']
     return {
-      'data': str(ifUser),
+      'data': ifUser,
       'message': f"User {user['user']} authenticated",
       'status': True
     }
