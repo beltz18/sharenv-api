@@ -1,7 +1,7 @@
 from controllers.connection import db
 from var.collections        import *
 
-def createSpace(u,s,i=None):
+def createSpace(u,s,i):
   """
   This function creates a new space with a given name and owner, and checks if the owner exists in the
   user database.
@@ -20,8 +20,9 @@ def createSpace(u,s,i=None):
     'invited': [i],
     'files': []
   }
-  ifUser  = userDb.find_one({ 'user': u })
-  ifSpace = spaceDb.find_one({ 'name': s })
+  ifUser    = userDb.find_one({ 'user': u  })
+  ifInvited = userDb.find_one({ 'user': i  })
+  ifSpace   = spaceDb.find_one({ 'name': s })
 
   if ifUser:
     if ifSpace:
@@ -29,6 +30,16 @@ def createSpace(u,s,i=None):
         'message': f'Space {s} already exists',
         'status': False
        }
+    if i == u:
+      return {
+        'message': 'You cannot invite yourself to a Space',
+        'status': False
+      }
+    if not ifInvited:
+      return {
+        'message': "The person that has been invited doesn't have an account",
+        'status': False
+      }
     spaceDb.insert_one(space)
     return {
       'message': f'Space {s} created successfully',
@@ -90,8 +101,8 @@ def updateSpace(s,u):
   # u = user invited to space
   ifSpace  = spaceDb.find_one({ 'name':    s })
   ifExists = userDb.find_one( { 'user':    u })
-  ifUser   = spaceDb.find_one({ 'invited': u })
-  ifOwner  = spaceDb.find_one({ 'owner':   u })
+  ifUser   = spaceDb.find_one({ 'name': s, 'invited': u })
+  ifOwner  = spaceDb.find_one({ 'name': s, 'owner': u })
 
   if ifSpace:
     # Check if user exists
@@ -124,6 +135,12 @@ def updateSpace(s,u):
         'message': "The specified user doesn't exist",
         'status': False
       }
+    
+  else:
+    return {
+      'message': "This space doesn't exist",
+      'status': False
+    }
     
 def renameSpace(s,u,n):
   """
