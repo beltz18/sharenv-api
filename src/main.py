@@ -1,7 +1,8 @@
-from flask            import *
-from var.vars         import *
-from controllers.user import *
-from flask_cors       import CORS
+from flask              import *
+from var.vars           import *
+from controllers.user   import *
+from controllers.spaces import *
+from flask_cors         import CORS
 
 app = Flask(__name__)
 app.secret_key = SECRET
@@ -21,7 +22,6 @@ def create_user():
   provided.
   """
   if request.method == 'POST':
-    print(request.form)
     user = request.json['user']
     pasw = request.json['pasw']
     a = createUser(user,pasw)
@@ -36,9 +36,32 @@ def auth_user():
   username and password.
   """
   if request.method == 'POST':
-    print(request.form)
     user = request.json['user']
     a = authUser(user)
+    return a
+  
+@app.route(CREATE_S, methods=['POST'])
+def create_space():
+  if request.method == 'POST':
+    space   = request.json['space']
+    owner   = request.json['owner']
+    invited = request.json['invited']
+    a = createSpace(owner,space,invited)
+    return a
+  
+@app.route(LIST_S, methods=['POST'])
+def list_spaces():
+  if request.method == 'POST':
+    user = request.json['user']
+    a = listSpaces(user)
+    return a
+
+@app.route(UPDATE_S, methods=['POST'])
+def update_space():
+  if request.method == 'POST':
+    space   = request.json['space']
+    invited = request.json['invited']
+    a = updateSpace(space, invited)
     return a
 
 if __name__ == '__main__':

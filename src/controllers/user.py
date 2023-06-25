@@ -1,4 +1,5 @@
 from controllers.connection import db
+from var.collections        import *
 
 def createUser(u,p):
   """
@@ -11,7 +12,6 @@ def createUser(u,p):
   user already exists, the message will say "User {user['user']} already exists". If the user does not
   exist, the message will say "User {user['user']} inserted
   """
-  userDb = db.users
   user = {
     'user': u,
     'password' : p
@@ -43,7 +43,6 @@ def authUser(u):
   exists, the message will say "User {user['user']} authenticated". If the user doesn't exist, the
   message will say "User {user['user']} doesn't exists".
   """
-  userDb = db.users
   user = { 'user': u }
   ifUser = userDb.find_one(user)
   
