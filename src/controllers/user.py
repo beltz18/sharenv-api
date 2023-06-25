@@ -25,6 +25,12 @@ def createUser(u,p):
     }
   
   userDb.insert_one(user)
+  spaceDb.insert_one({
+    'name': 'main',
+    'owner' : user['user'],
+    'invited': [],
+    'files': []
+  })
   return {
     'message': f"User {user['user']} inserted",
     'status': True
